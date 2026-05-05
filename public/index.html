@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TradeBot v15 — Groww AI Engine</title>
+<title>TradeBot v16 — Most-Bought / Top-Intraday AI Engine</title>
 <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -542,14 +542,23 @@ function renderPreds() {
     // Indicator chips
     const rsiCol = (p.rsi||50)>65?'var(--red)':(p.rsi||50)<35?'var(--green)':'var(--yellow)';
     const emaCol = p.emaStack==='BULL'?'var(--green)':p.emaStack==='BEAR'?'var(--red)':'var(--muted)';
+    const adxCol = (p.adx||0)>=25?'var(--green)':(p.adx||0)>=20?'var(--yellow)':'var(--muted)';
+    const volCol = (p.volSurge||1)>=1.5?'var(--green)':(p.volSurge||1)<0.6?'var(--red)':'var(--muted)';
+    const gapType = p.gap?.type||'NONE';
+    const gapCol = gapType.includes('UP')?'var(--green)':gapType.includes('DOWN')?'var(--red)':'var(--muted)';
     const indHtml = `
       <div class="pc-indicators">
         ${p.rsi?`<span class="ind-chip" style="color:${rsiCol}">RSI ${p.rsi}</span>`:''}
+        ${p.rsi1m&&p.rsi1m!==50?`<span class="ind-chip" style="color:${rsiCol};opacity:.75">1m ${p.rsi1m}</span>`:''}
         ${p.vwap?`<span class="ind-chip" style="color:${p.aboveVWAP?'var(--green)':'var(--red)'}">VWAP ${p.aboveVWAP?'▲':'▼'} ₹${p.vwap}</span>`:''}
         ${p.emaStack?`<span class="ind-chip" style="color:${emaCol}">EMA ${p.emaStack}</span>`:''}
+        ${p.adx?`<span class="ind-chip" style="color:${adxCol}">ADX ${p.adx}</span>`:''}
         ${p.dev10!=null?`<span class="ind-chip">10m ${p.dev10>=0?'+':''}${p.dev10}%</span>`:''}
+        ${p.volSurge?`<span class="ind-chip" style="color:${volCol}">Vol ${p.volSurge}x</span>`:''}
+        ${gapType!=='NONE'?`<span class="ind-chip" style="color:${gapCol}">Gap ${p.gap.pct>=0?'+':''}${p.gap.pct}%</span>`:''}
         ${p.atr?`<span class="ind-chip">ATR ₹${p.atr}</span>`:''}
-      </div>`;
+      </div>
+      ${(p.growwLists&&p.growwLists.length)?`<div class="pc-indicators" style="margin-top:4px">${p.growwLists.slice(0,4).map(l=>`<span class="ind-chip" style="background:rgba(0,208,156,.08);color:var(--groww);font-size:9px">👥 ${l.replace(/_/g,' ')}</span>`).join('')}</div>`:''}`;
 
     return `<div class="pred-card ${p.action}" onclick="selectSym('${p.symbol}')">
       <div class="pc-top">
