@@ -3,12 +3,11 @@
   "builds": [{ "src": "server.js", "use": "@vercel/node" }],
   "routes": [{ "src": "/(.*)", "dest": "server.js" }],
   "crons": [
-    { "path": "/api/cron/mtf-refresh",   "schedule": "30 2 * * 1-5" },
-    { "path": "/api/cron/load-history",  "schedule": "0 3 * * 1-5"  },
-    { "path": "/api/cron/snapshot-915",  "schedule": "45 3 * * 1-5" },
-    { "path": "/api/cron/snapshot-925",  "schedule": "55 3 * * 1-5" },
-    { "path": "/api/cron/refresh",       "schedule": "*/3 4-9 * * 1-5" },
-    { "path": "/api/cron/tag-outcomes",  "schedule": "5 10 * * 1-5"  },
-    { "path": "/api/cron/reset",         "schedule": "30 10 * * 1-5" }
+    { "path": "/api/cron/mtf-refresh",  "schedule": "30 2 * * 1-5" },
+    { "path": "/api/cron/load-history", "schedule": "0 3 * * 1-5"  },
+    { "path": "/api/cron/snapshot-915", "schedule": "45 3 * * 1-5" },
+    { "path": "/api/cron/snapshot-925", "schedule": "55 3 * * 1-5" },
+    { "path": "/api/cron/tag-outcomes", "schedule": "5 10 * * 1-5"  },
+    { "path": "/api/cron/reset",        "schedule": "30 10 * * 1-5" }
   ]
 }
